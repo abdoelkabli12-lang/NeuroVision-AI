@@ -1,0 +1,26 @@
+# Core data processing and visualization
+numpy>=1.26
+pandas>=2.1
+matplotlib>=3.8
+seaborn>=0.13
+scikit-learn>=1.4
+Pillow>=10.0
+opencv-python>=4.9
+
+# Classification: transfer learning with TensorFlow/Keras
+tensorflow>=2.16,<3
+
+# Object detection: YOLOv8 and bounding-box augmentation
+ultralytics>=8.3,<9
+albumentations>=1.4
+
+# Dashboard and workflow orchestration
+streamlit>=1.32
+apache-airflow>=2.10,<3
+python-dotenv>=1.0
+PyYAML>=6.0
+
+# Notebooks and tests
+jupyterlab>=4.1
+ipykernel>=6.29
+pytest>=8.0
