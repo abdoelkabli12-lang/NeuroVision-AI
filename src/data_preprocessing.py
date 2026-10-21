@@ -431,6 +431,19 @@ def image_process(image_path):
     resized_image = tf.image.resize(decoded_img, (150, 150))
     return resized_image
 
+flip = tf.keras.layers.RandomFlip(mode="horizontal", seed=SEED)
+rotation = tf.keras.layers.RandomRotation(factor=0.05, seed=SEED)
+zoom = tf.keras.layers.RandomZoom(height_factor=0.1, width_factor=0.1, seed=SEED)
+translate = tf.keras.layers.RandomTranslation(width_factor=0.1, height_factor=0.1, seed=SEED)
+contrast = tf.keras.layers.RandomContrast(factor=0.1, value_range=(0, 255), seed=SEED)
+
+def augmentation(image):
+    image = flip(image)
+    image = rotation(image)
+    image = zoom(image)
+    image = translate(image)
+    image = contrast(image)
+    return image
 
 def load_classification_data(manifest_or_root, split="Train", allowed_paths=['data/raw']):
     norm_root = validate_dataset_root(manifest_or_root, allowed_paths)
@@ -450,4 +463,45 @@ def load_classification_data(manifest_or_root, split="Train", allowed_paths=['da
                 CLASS_IDS.append(CLASS_MAPPINGS[clss])
     return IMAGES, CLASS_IDS
 
+
+image_path = r"data/raw/Train/Glioma/Images/gg (1).jpg"
+
+image = image_process(image_path)
+
+print("Shape:", image.shape)
+print("Data type:", image.dtype)
+print("Min pixel:", tf.reduce_min(image).numpy())
+print("Max pixel:", tf.reduce_max(image).numpy())
+
+
+
+def visualize_augmentation(image_path):
+    image = image_process(image_path)
+
+    images = [
+        image,
+        flip(image),
+        rotation(image),
+        zoom(image),
+        translate(image),
+        contrast(image)
+    ]
+
+    titles = [
+        "Original", "Horizontal Flip", "Rotation",
+        "Zoom", "Translation", "Contrast"
+    ]
+
+    plt.figure(figsize=(12, 8))
+
+    for i, (img, title) in enumerate(zip(images, titles)):
+        plt.subplot(2, 3, i + 1)
+        plt.imshow(tf.cast(tf.clip_by_value(img, 0, 255), tf.uint8))
+        plt.title(title)
+        plt.axis("off")
+
+    plt.tight_layout()
+    plt.show()
+    
+visualize_augmentation(image_path=image)
 
