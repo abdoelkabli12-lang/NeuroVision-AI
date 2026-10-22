@@ -1,5 +1,5 @@
 import os
-from dataset_utils import validate_dataset_root
+from path_utils import validate_dataset_root
 from config import CLASSES, ALLOWED_IDS
 import numpy as np
 
