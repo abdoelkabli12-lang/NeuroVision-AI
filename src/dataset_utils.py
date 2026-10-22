@@ -137,9 +137,16 @@ def audit_image_label_pairs(manifest_or_root, allowed_paths=['data/raw/Train','d
         label_names = [
             f for f in os.listdir(label_dir)
             if os.path.isfile(os.path.join(label_dir, f))
-            and validate_annotation_file(os.path.join(label_dir, f))
+            # and validate_annotation_file(os.path.join(label_dir, f))
             and os.path.splitext(f)[1].lower() == ".txt"
         ]
+        
+        invalid_labels = []
+        
+        for ann in os.listdir(label_dir):
+            path = os.path.join(label_dir, ann)
+            if not validate_annotation_file(path):
+                invalid_labels.append(ann)
 
         img_stems = get_file_stems(image_names)
         label_stems = get_file_stems(label_names)
@@ -154,7 +161,8 @@ def audit_image_label_pairs(manifest_or_root, allowed_paths=['data/raw/Train','d
             "image_count": len(image_names),
             "label_count": len(label_names),
             "orphan_images": orphan_images,
-            "orphan_labels": orphan_labels
+            "orphan_labels": orphan_labels,
+            "invalid annotations": invalid_labels
         }
 
     return res_dict
