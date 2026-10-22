@@ -278,6 +278,7 @@ def audit_image_label_pairs(manifest_or_root, allowed_paths=['data/raw/Train','d
         label_names = [
             f for f in os.listdir(label_dir)
             if os.path.isfile(os.path.join(label_dir, f))
+            and validate_annotation_file(os.path.join(label_dir, f))
             and os.path.splitext(f)[1].lower() == ".txt"
         ]
 
