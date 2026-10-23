@@ -92,20 +92,20 @@ x_train, x_test, y_train, y_test = data_split("data/raw")
 # save_manifest(df, "data/processed/classification_manifest.csv")
 
 
-train_ds = data_loader(
-    x_train,
-    y_train,
-    batch_size=32,
-    augment=True,
-    shuffle=True
-)
+# train_ds = data_loader(
+#     x_train,
+#     y_train,
+#     batch_size=32,
+#     augment=True,
+#     shuffle=True
+# )
 
-# 3. Inspect one batch
-for images, labels in train_ds.take(1):
-    print("Images shape:", images.shape)
-    print("Labels shape:", labels.shape)
-    print("Image dtype:", images.dtype)
-    print("Label dtype:", labels.dtype)
-    print("Pixel minimum:", tf.reduce_min(images).numpy())
-    print("Pixel maximum:", tf.reduce_max(images).numpy())
-    print("Labels in batch:", labels.numpy())
+# # 3. Inspect one batch
+# for images, labels in train_ds.take(1):
+#     print("Images shape:", images.shape)
+#     print("Labels shape:", labels.shape)
+#     print("Image dtype:", images.dtype)
+#     print("Label dtype:", labels.dtype)
+#     print("Pixel minimum:", tf.reduce_min(images).numpy())
+#     print("Pixel maximum:", tf.reduce_max(images).numpy())
+#     print("Labels in batch:", labels.numpy())
