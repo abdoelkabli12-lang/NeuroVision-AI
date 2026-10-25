@@ -53,13 +53,14 @@ adam = tf.keras.optimizers.Adam(
 model.compile(
     optimizer=adam,
     loss="sparse_categorical_crossentropy",
-    metrics=["accuracy"]
+    metrics=["accuracy"],
+    
   )
 
 early_stopping = tf.keras.callbacks.EarlyStopping(
   monitor='val_loss',
   min_delta=0.002,
-  patience=3,
+  patience=5,
   mode='auto',
   restore_best_weights=True
 )
@@ -67,7 +68,7 @@ early_stopping = tf.keras.callbacks.EarlyStopping(
 reducelr = tf.keras.callbacks.ReduceLROnPlateau(
   monitor='val_loss',
   factor=0.1,
-  patience=5,
+  patience=2,
   mode='auto',
   cooldown=0,
   min_delta=0.001
