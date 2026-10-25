@@ -31,7 +31,7 @@ early_stopping = tf.keras.callbacks.EarlyStopping(
   min_delta=0.002,
   patience=3,
   mode='auto',
-  restore_best_weights=False
+  restore_best_weights=True
 )
 
 reducelr = tf.keras.callbacks.ReduceLROnPlateau(
@@ -53,7 +53,7 @@ callbacks = [early_stopping, reducelr, checkpoint]
 
 history = model.fit(
   x=train_ds,
-  batch_size=32,
+  validation_data=val_ds,
   epochs=10,
   callbacks=callbacks
 )

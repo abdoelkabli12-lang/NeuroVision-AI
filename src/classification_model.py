@@ -59,5 +59,4 @@ def build_model():
     metrics=["accuracy"]
   )
   
-  
   return seq
