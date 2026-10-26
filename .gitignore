@@ -182,3 +182,5 @@ pnpm-debug.log*
 *.lnk
 *~
 .*.sw?
+
+*.png
