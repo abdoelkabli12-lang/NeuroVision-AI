@@ -1,7 +1,8 @@
 import os
-from config import CLASSES, IMAGES_EXT
+from config import CLASSES, IMAGES_EXT, CLASS_MAPPINGS
 from annotation import validate_annotation_file
 from path_utils import validate_dataset_root
+import Exceptions as e
 
 def get_file_stems(filenames):
     """
@@ -32,6 +33,28 @@ def get_file_stems(filenames):
         stems.append(file)
     return stems
   
+  
+def get_file_stem(filename):
+    """
+    Extract the stem of a single filename by removing its file extension.
+
+    Args:
+        filename (str): A filename with or without a file extension.
+
+    Returns:
+        str: The filename stem, excluding the final extension.
+
+    Example:
+        Input:
+            "image_001.jpg"
+
+        Output:
+            "image_001"
+    """
+    
+    file, _ = os.path.splitext(filename)
+    return file
+
 def find_mismatched_stems(filenames, reference_stems):
     """
     Identify filename stems that do not exist in a reference collection.
@@ -166,3 +189,38 @@ def audit_image_label_pairs(manifest_or_root, allowed_paths=['data/raw/Train','d
         }
 
     return res_dict
+
+def build_detection_manifest(manifest_or_root, allowed_paths=None):
+    res = []
+    dic = {}
+    norm_root = validate_dataset_root(manifest_or_root=manifest_or_root, allowed_paths=['data/raw/Train', 'data/raw/Val']) 
+    for clss in os.listdir(norm_root):
+        imagestems = []
+        labelstems = []
+        if clss in CLASSES:
+            classpath = os.path.join(norm_root, clss)
+            imagespath = os.path.join(classpath, "Images")
+            labelspath = os.path.join(classpath, "Labels")
+            for imagename in os.listdir(imagespath):
+                imagestems.append(get_file_stem(imagename))
+            for labelsname in os.listdir(labelspath):
+                labelstems.append(get_file_stem(labelsname))
+            for image in imagestems:
+                if image not in labelstems:
+                    raise e.MissingCredintialsError("Missing label for image")
+            for label in labelstems:
+                if label not in imagestems:
+                    raise e.MissingCredintialsError("Missing image for label")
+            for imagename in os.listdir(imagespath):
+                imagestem = get_file_stem(imagename)
+                dic = {
+                    "image_path": os.path.join(imagespath, imagename),
+                    "label_path": os.path.join(labelspath, imagestem + ".txt"),
+                    "class_name": clss,
+                    "class_id": CLASS_MAPPINGS[clss],
+                    "split": os.path.basename(norm_root)
+                }
+
+                res.append(dic)
+
+    return res

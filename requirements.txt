@@ -24,3 +24,5 @@ PyYAML>=6.0
 jupyterlab>=4.1
 ipykernel>=6.29
 pytest>=8.0
+
+ultralytics

@@ -50,6 +50,7 @@ adam = tf.keras.optimizers.Adam(
     learning_rate=0.00001
   )
 
+
 model.compile(
     optimizer=adam,
     loss="sparse_categorical_crossentropy",
