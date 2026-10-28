@@ -33,3 +33,5 @@ ALLOWED_IDS = [
   2,
   3
 ]
+
+DETECTION_DATA_ROOT = "data/processed/yolo"

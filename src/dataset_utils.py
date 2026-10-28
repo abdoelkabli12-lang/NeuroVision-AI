@@ -193,6 +193,8 @@ def audit_image_label_pairs(manifest_or_root, allowed_paths=['data/raw/Train','d
 def build_detection_manifest(manifest_or_root, allowed_paths=None):
     res = []
     dic = {}
+    count_image = 0
+    count_label = 0
     norm_root = validate_dataset_root(manifest_or_root=manifest_or_root, allowed_paths=['data/raw/Train', 'data/raw/Val']) 
     for clss in os.listdir(norm_root):
         imagestems = []
@@ -205,22 +207,23 @@ def build_detection_manifest(manifest_or_root, allowed_paths=None):
                 imagestems.append(get_file_stem(imagename))
             for labelsname in os.listdir(labelspath):
                 labelstems.append(get_file_stem(labelsname))
-            for image in imagestems:
-                if image not in labelstems:
-                    raise e.MissingCredintialsError("Missing label for image")
-            for label in labelstems:
-                if label not in imagestems:
-                    raise e.MissingCredintialsError("Missing image for label")
             for imagename in os.listdir(imagespath):
                 imagestem = get_file_stem(imagename)
-                dic = {
-                    "image_path": os.path.join(imagespath, imagename),
-                    "label_path": os.path.join(labelspath, imagestem + ".txt"),
-                    "class_name": clss,
-                    "class_id": CLASS_MAPPINGS[clss],
-                    "split": os.path.basename(norm_root)
-                }
+                if imagestem in labelstems:
+                    dic = {
+                        "image_path": os.path.join(imagespath, imagename),
+                        "label_path": os.path.join(labelspath, imagestem + ".txt"),
+                        "class_name": clss,
+                        "class_id": CLASS_MAPPINGS[clss],
+                        "split": os.path.basename(norm_root)
+                    }
 
-                res.append(dic)
-
+                    res.append(dic)
+                else :
+                    count_image += 1
+            for labelstem in labelstems:
+                if labelstem not in imagestems:
+                    count_label += 1
+    # print(count_image)
+    # print(count_label)
     return res
