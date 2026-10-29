@@ -3,3 +3,6 @@ class ModelNotFoundError (Exception):
 
 class MissingCredintialsError (Exception):
   pass
+
+class InvalidRegularizationError (Exception):
+  pass

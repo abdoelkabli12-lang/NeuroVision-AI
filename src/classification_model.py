@@ -29,8 +29,18 @@ image_batch, label_batch = next(iter(train_ds))
 
 
 
-def build_model(model: str):
+def build_model(model: str, regularisation="L2"):
   model = model.lower()
+  if regularisation == "L2":
+    k_reg = tf.keras.regularizers.L2(1e-4)
+    b_reg = tf.keras.regularizers.L2(1e-4)
+    ac_reg = tf.keras.regularizers.L2(1e-5)
+  elif regularisation == "L1":
+    k_reg = tf.keras.regularizers.L1(1e-4)
+    b_reg = tf.keras.regularizers.L1(1e-4)
+    ac_reg = tf.keras.regularizers.L1(1e-5)
+  else:
+    raise e.InvalidRegularizationError(f"{regularisation} is not a vaild regularization")
   
   models = [
     "resnet50",
@@ -66,9 +76,9 @@ def build_model(model: str):
     prediction_layer = tf.keras.layers.Dense(
       4,
       activation='softmax',
-      kernel_regularizer=tf.keras.regularizers.L2(1e-4),
-      # bias_regularizer=tf.keras.regularizers.L2(1e-4),
-      # activity_regularizer=tf.keras.regularizers.L2(1e-5)
+      kernel_regularizer=k_reg,
+      bias_regularizer=b_reg,
+      activity_regularizer=ac_reg
     )
     base_model.trainable = False
     
