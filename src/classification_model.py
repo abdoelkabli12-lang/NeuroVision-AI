@@ -58,7 +58,8 @@ def build_model(model: str, regularisation="L2"):
               input_shape=(150, 150, 3)
             )
       case "resnet101":
-        img_preprocessed = tf.keras.layers.Lambda(tf.keras.applications.resnet101.preprocess_input)
+        # Keras exposes one shared preprocessing module for all ResNet versions.
+        img_preprocessed = tf.keras.layers.Lambda(tf.keras.applications.resnet.preprocess_input)
         base_model = tf.keras.applications.ResNet101(
               include_top=False,
               weights="imagenet",
