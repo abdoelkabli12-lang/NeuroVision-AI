@@ -4,10 +4,8 @@ from pathlib import Path
 import tensorflow as tf
 
 from classification_data import data_loader, data_split, load_classification_data
-from train_classification import BATCH_SIZE, EPOCHS, MODELS, MODELS_DIR, REGULARISATIONS, model_stem
-
-FINE_TUNE_LAYERS = 30
-
+from config import BATCH_SIZE, EPOCHS, MODELS, MODELS_DIR, REGULARISATIONS, FINE_TUNE_LAYERS
+from train_classification import model_stem
 
 def make_callbacks(model_path: Path) -> list[tf.keras.callbacks.Callback]:
     return [

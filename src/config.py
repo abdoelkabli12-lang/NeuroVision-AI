@@ -1,3 +1,5 @@
+from pathlib import Path
+
 DATASET_ROOT = "data/raw"
 
 TRAIN_DATA = "data/raw/Train"
@@ -35,3 +37,13 @@ ALLOWED_IDS = [
 ]
 
 DETECTION_DATA_ROOT = "data/processed/yolo"
+
+MODELS = ("resnet50", "resnet101", "mobilenetv2")
+
+REGULARISATIONS = ("L1", "L2")
+
+MODELS_DIR = Path("models")
+
+EPOCHS = 10
+
+FINE_TUNE_LAYERS = 30

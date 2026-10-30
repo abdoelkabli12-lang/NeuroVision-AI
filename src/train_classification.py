@@ -8,12 +8,7 @@ import tensorflow as tf
 from classification_data import data_loader, data_split, load_classification_data
 from classification_model import build_model
 
-MODELS = ("resnet50", "resnet101", "mobilenetv2")
-REGULARISATIONS = ("L1", "L2")
-MODELS_DIR = Path("models")
-EPOCHS = 10
-BATCH_SIZE = 32
-
+from config import MODELS, MODELS_DIR, BATCH_SIZE, REGULARISATIONS, EPOCHS
 
 def model_stem(model_name: str, regularisation: str) -> str:
     return f"{model_name.lower()}_model_{regularisation.upper()}"
