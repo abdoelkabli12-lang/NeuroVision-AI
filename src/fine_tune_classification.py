@@ -1,5 +1,3 @@
-"""Fine-tune each feature-extraction classification model."""
-
 import json
 from pathlib import Path
 
@@ -20,7 +18,6 @@ def make_callbacks(model_path: Path) -> list[tf.keras.callbacks.Callback]:
 
 
 def unfreeze_backbone(model: tf.keras.Model, backbone_name: str) -> None:
-    """Unfreeze final convolutional layers while preserving batch-normalisation state."""
     backbone = model.get_layer(backbone_name)
     backbone.trainable = True
     for layer in backbone.layers:
